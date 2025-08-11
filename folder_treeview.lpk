@@ -7,7 +7,7 @@
       <Version Value="11"/>
       <SearchPaths>
         <IncludeFiles Value="src"/>
-        <OtherUnitFiles Value="src"/>
+        <OtherUnitFiles Value="src;utils"/>
         <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
     </CompilerOptions>
@@ -20,6 +20,26 @@
         <Filename Value="src/folder_explorer_treeview.pas"/>
         <HasRegisterProc Value="True"/>
         <UnitName Value="folder_explorer_treeview"/>
+      </Item>
+      <Item>
+        <Filename Value="utils/exttypes.pas"/>
+        <UnitName Value="exttypes"/>
+      </Item>
+      <Item>
+        <Filename Value="utils/filefunc.pas"/>
+        <UnitName Value="filefunc"/>
+      </Item>
+      <Item>
+        <Filename Value="utils/logfunc.pas"/>
+        <UnitName Value="logfunc"/>
+      </Item>
+      <Item>
+        <Filename Value="utils/strfunc.pas"/>
+        <UnitName Value="strfunc"/>
+      </Item>
+      <Item>
+        <Filename Value="utils/sysfunc.pas"/>
+        <UnitName Value="sysfunc"/>
       </Item>
       <Item>
         <Filename Value="src/default_item_images.lrs"/>
