@@ -18,6 +18,8 @@ const
   NO_IMG_INDEX = 0;
   FILE_IMG_INDEX = 2;
 
+  DEFAULT_DIRECTORY_DESKTOP_FILENAME = '.directory';
+
 type
   TFolderEplorerTreeView = class(TTreeView)
   private
@@ -34,6 +36,9 @@ type
     { Установить путь для узла }
     procedure SetNodeFolderPath(AFolderPath: String; ANode: TTreeNode);
 
+    { Установить иконку узла по имени файла desktop }
+    procedure SetNodeIconByDesktop(ANode: TTreeNode; ADesktopFileName: AnsiString);
+
   public
     // Конструктор
     constructor Create(AOwner: TComponent); override;
@@ -49,7 +54,7 @@ procedure Register;
 implementation
 
 uses
-  filefunc, exttypes, logfunc;
+  strfunc, filefunc, exttypes, logfunc, desktopfile;
 
 procedure Register;
 begin
@@ -122,6 +127,9 @@ var
   filenames: TArrayOfString;
   i: Integer;
   node: TTreeNode;
+  base_filename: AnsiString;
+  desktop_filename: AnsiString;
+  desktop_file: TDesktopFile;
 begin
   if not DirectoryExists(AFolderPath) then
   begin
@@ -134,20 +142,68 @@ begin
   dirs := filefunc.GetDirList(AFolderPath);
   for i := 0 to Length(dirs) - 1 do
   begin
-    // logfunc.InfoMsgFmt('Добавление папки <%s>', [dirs[i]]);
-    node := Items.AddChild(ANode, filefunc.GetBaseName(dirs[i]));
-    node.ImageIndex := FOLDER_IMG_INDEX;
+    base_filename := filefunc.GetBaseName(dirs[i]);
+    if not strfunc.IsStartsWith(base_filename, '.') then
+    begin
+      // logfunc.InfoMsgFmt('Добавление папки <%s>', [dirs[i]]);
+      node := Items.AddChild(ANode, base_filename);
+      desktop_filename := filefunc.JoinPath([dirs[i], DEFAULT_DIRECTORY_DESKTOP_FILENAME]);
+      if FileExists(desktop_filename) then
+        self.SetNodeIconByDesktop(node, desktop_filename)
+      else
+        node.ImageIndex := FOLDER_IMG_INDEX;
+      // Рекурсивно вызываем обработку подпапок
+      self.SetNodeFolderPath(dirs[i], node);
+    end;
   end;
 
   // Файлы
   filenames := filefunc.GetFileNameList(AFolderPath);
   for i := 0 to Length(filenames) - 1 do
   begin
-    // logfunc.InfoMsgFmt('Добавление файла <%s>', [filenames[i]]);
-    node := Items.AddChild(ANode, filefunc.GetBaseName(filenames[i]));
-    node.ImageIndex := FILE_IMG_INDEX;
+    base_filename := filefunc.GetBaseName(filenames[i]);
+    if not strfunc.IsStartsWith(base_filename, '.') then
+    begin
+      // logfunc.InfoMsgFmt('Добавление файла <%s>', [filenames[i]]);
+      node := Items.AddChild(ANode, base_filename);
+      node.ImageIndex := FILE_IMG_INDEX;
+    end;
   end;
   
+end;
+
+
+{ Установить иконку узла по имени файла desktop }
+procedure TFolderEplorerTreeView.SetNodeIconByDesktop(ANode: TTreeNode; ADesktopFileName: AnsiString);
+var
+  desktop_file: TDesktopFile;
+  bmp: TBitmap;
+  icon_filename: AnsiString;
+begin
+  if not FileExists(ADesktopFileName) then
+  begin
+    logfunc.ErrorMsgFmt('Файл ярлыка <%s> не найден', [ADesktopFileName]);
+    Exit;
+  end;
+
+  desktop_file := TDesktopFile.Create(ADesktopFileName);
+  try
+    icon_filename := desktop_file.GetIconFileName();
+    if (not strfunc.IsEmptyStr(icon_filename)) and FileExists(icon_filename) then
+    begin
+      bmp := TBitmap.Create();
+      try
+        bmp.LoadFromFile(icon_filename);
+        ANode.ImageIndex := FImageList.Add(bmp, nil);
+      finally
+        bmp.Free;  
+      end;
+    end
+    else
+      ANode.ImageIndex := NO_IMG_INDEX;
+  finally
+    desktop_file.Free;
+  end;  
 end;
 
 

@@ -89,6 +89,8 @@ function GetDirList(APath: AnsiString; AFullPath: Boolean=True; ASort: Boolean =
 { Список файлов в папке }
 function GetFileNameList(APath: AnsiString; AFullPath: Boolean=True; ASort: Boolean = False): TArrayOfString;
 
+{ Список файлов в папке и всех подпапках }
+function GetFileNameListCascade(APath: AnsiString; AFileNameMatch: AnsiString): TArrayOfString;
 
 implementation
 
@@ -400,6 +402,37 @@ begin
       else
         Result[i] := search_rec.Name;
       Inc(i);
+    until FindNext(search_rec) <> 0;
+    FindClose(search_rec);
+  end;
+end;
+
+
+{ Список файлов в папке и всех подпапках }
+function GetFileNameListCascade(APath: AnsiString; AFileNameMatch: AnsiString): TArrayOfString;
+var
+  search_rec: TSearchRec;
+  i: Integer;
+  sub_folder_list: TArrayOfString;
+begin
+  i := 0;
+  if FindFirst(JoinPath([APath, AFileNameMatch]), faAnyFile, search_rec) = 0 then
+  begin
+    repeat
+      if ((search_rec.Attr and faDirectory) <> 0) and (search_rec.Name <> '.') and (search_rec.Name <> '..') then
+      begin
+        // Обработка подпапок рекурсивно
+        sub_folder_list := GetFileNameListCascade(JoinPath([APath, search_rec.Name]), AFileNameMatch);
+        Result := strfunc.ConcatArrayOfString(Result, sub_folder_list);
+        i := i + Length(sub_folder_list);
+      end
+      else
+      begin
+        SetLength(Result, i + 1);
+        // logfunc.DebugMsgFmt('Формирование списка файлов <%s : %s>', [APath, search_rec.Name]);
+        Result[i] := JoinPath([APath, search_rec.Name]);
+        Inc(i);
+      end;
     until FindNext(search_rec) <> 0;
     FindClose(search_rec);
   end;

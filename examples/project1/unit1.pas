@@ -5,7 +5,7 @@ unit Unit1;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls,
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Buttons,
   folder_explorer_treeview;
 
 type
@@ -13,9 +13,12 @@ type
   { TForm1 }
 
   TForm1 = class(TForm)
-    Button1: TButton;
+    Edit1: TEdit;
     FolderEplorerTreeView1: TFolderEplorerTreeView;
+    SelectDirectoryDialog1: TSelectDirectoryDialog;
+    SpeedButton1: TSpeedButton;
     procedure Button1Click(Sender: TObject);
+    procedure SpeedButton1Click(Sender: TObject);
   private
 
   public
@@ -36,7 +39,16 @@ uses
 
 procedure TForm1.Button1Click(Sender: TObject);
 begin
-  FolderEplorerTreeView1.RootFolderPath := filefunc.JoinPath([filefunc.GetHomeDir(), 'tmp']);
+  // FolderEplorerTreeView1.RootFolderPath := filefunc.JoinPath([filefunc.GetHomeDir(), 'tmp']);
+end;
+
+procedure TForm1.SpeedButton1Click(Sender: TObject);
+begin
+  if SelectDirectoryDialog1.Execute then
+  begin
+    Edit1.Text := SelectDirectoryDialog1.FileName;
+    FolderEplorerTreeView1.RootFolderPath := SelectDirectoryDialog1.FileName;
+  end;
 end;
 
 end.

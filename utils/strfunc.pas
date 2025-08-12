@@ -1,7 +1,7 @@
 {
 Функции работы со строками
 
-Версия: 0.1.1.1
+Версия: 0.1.2.1
 }
 unit strfunc;
 
@@ -185,6 +185,9 @@ function JoinArrayOfString(AArray1, AArray2: TArrayOfString): TArrayOfString;
 { Функции конвертации списка строк в массив и обратно }
 function StringListToArrayOfString(AStringList: TStringList): TArrayOfString;
 function ArrayOfStringToStringList(AArrayOfString: TArrayOfString): TStringList;
+
+{ Объединение двух списков строк}
+function ConcatArrayOfString(AArray1, AArray2: TArrayOfString): TArrayOfString;
 
 implementation
 
@@ -571,5 +574,14 @@ begin
     Result.Add(AArrayOfString[i]);
 end;
 
+
+{ Объединение двух списков строк}
+function ConcatArrayOfString(AArray1, AArray2: TArrayOfString): TArrayOfString;
+begin
+  SetLength(Result, Length(AArray1) + Length(AArray2));
+  FillByte(Result[0], Length(AArray1) + Length(AArray2), 0);
+  Move(AArray1[0], Result[0],  Length(AArray1));
+  Move(AArray2[0], Result[Length(AArray1)], Length(AArray2));
+end;
 end.
 
