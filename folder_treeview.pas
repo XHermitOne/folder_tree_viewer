@@ -9,7 +9,7 @@ interface
 
 uses
   desktopfile, folder_explorer_treeview, exttypes, filefunc, logfunc, strfunc, 
-  sysfunc, LazarusPackageIntf;
+  sysfunc, execfunc, LazarusPackageIntf;
 
 implementation
 

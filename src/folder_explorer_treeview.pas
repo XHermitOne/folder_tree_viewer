@@ -19,6 +19,7 @@ const
   FILE_IMG_INDEX = 2;
 
   DEFAULT_DIRECTORY_DESKTOP_FILENAME = '.directory';
+  DEFAULT_DESKTOP_FILE_EXT = '.desktop';
 
 type
   TFolderEplorerTreeView = class(TTreeView)
@@ -37,12 +38,21 @@ type
     procedure SetNodeFolderPath(AFolderPath: String; ANode: TTreeNode);
 
     { Установить иконку узла по имени файла desktop }
-    procedure SetNodeIconByDesktop(ANode: TTreeNode; ADesktopFileName: AnsiString);
+    procedure SetNodeIconByDesktop(ANode: TTreeNode; const ADesktopFileName: AnsiString; const ADefaultImgIndex: Integer);
 
   public
     // Конструктор
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
+
+    { Проверка узла-ярлыка }
+    function IsDesktopNode(ANode: TTreeNode): Boolean;
+    { Запуск узла-ярлыка }
+    procedure ExecDesktopNode(ANode: TTreeNode);
+    { Запуск узла по ассоциации }
+    procedure ExecAssociateNode(ANode: TTreeNode);
+    { Запуск узла в зависимости от его типа }
+    procedure ExecNode(ANode: TTreeNode);
 
   published
     property RootFolderPath: String read FRootFolderPath write SetRootFolderPath;   
@@ -68,6 +78,8 @@ var
   bmp: TBitmap;
 begin
   inherited Create(AOwner);
+
+  desktopfile.CreateSysIconFileNameCache([desktopfile.DEFAULT_SYS_ICON_GNOME_PATH, desktopfile.DEFAULT_SYS_PIXMAPS_PATH]);
 
   FImageList := TImageList.Create(self);
   // FImageList.AddLazarusResource('default_item_images');
@@ -100,6 +112,8 @@ end;
 
 destructor TFolderEplorerTreeView.Destroy;
 begin
+  desktopfile.DestroySysIconFileNameCache();
+
   FreeAndNil(FImageList);
   inherited;
 end;
@@ -116,6 +130,9 @@ begin
   end;
 
   FRootFolderPath := ARootFolderPath;
+
+  // Сначала полностью очищаем компонент дерева
+  self.Items.Clear;
 
   SetNodeFolderPath(ARootFolderPath, nil);  
 end;
@@ -149,7 +166,7 @@ begin
       node := Items.AddChild(ANode, base_filename);
       desktop_filename := filefunc.JoinPath([dirs[i], DEFAULT_DIRECTORY_DESKTOP_FILENAME]);
       if FileExists(desktop_filename) then
-        self.SetNodeIconByDesktop(node, desktop_filename)
+        self.SetNodeIconByDesktop(node, desktop_filename, FOLDER_IMG_INDEX)
       else
         node.ImageIndex := FOLDER_IMG_INDEX;
       // Рекурсивно вызываем обработку подпапок
@@ -162,11 +179,15 @@ begin
   for i := 0 to Length(filenames) - 1 do
   begin
     base_filename := filefunc.GetBaseName(filenames[i]);
-    if not strfunc.IsStartsWith(base_filename, '.') then
+    // logfunc.DebugMsgFmt('Проверка скрытых файлов <%s>', [base_filename]);
+    if (not strfunc.IsEmptyStr(base_filename)) and (not strfunc.IsStartsWith(base_filename, '.')) then
     begin
       // logfunc.InfoMsgFmt('Добавление файла <%s>', [filenames[i]]);
       node := Items.AddChild(ANode, base_filename);
-      node.ImageIndex := FILE_IMG_INDEX;
+      if ExtractFileExt(base_filename) = DEFAULT_DESKTOP_FILE_EXT then
+        self.SetNodeIconByDesktop(node, filenames[i], FILE_IMG_INDEX)
+      else 
+        node.ImageIndex := FILE_IMG_INDEX;
     end;
   end;
   
@@ -174,7 +195,7 @@ end;
 
 
 { Установить иконку узла по имени файла desktop }
-procedure TFolderEplorerTreeView.SetNodeIconByDesktop(ANode: TTreeNode; ADesktopFileName: AnsiString);
+procedure TFolderEplorerTreeView.SetNodeIconByDesktop(ANode: TTreeNode; const ADesktopFileName: AnsiString; const ADefaultImgIndex: Integer);
 var
   desktop_file: TDesktopFile;
   bmp: TBitmap;
@@ -193,17 +214,70 @@ begin
     begin
       bmp := TBitmap.Create();
       try
-        bmp.LoadFromFile(icon_filename);
+        // logfunc.DebugMsgFmt('Файл иконки <%s>', [icon_filename]);
+
+        // Пример загрузки файла PNG в TBitmap
+        with TPicture.Create do
+        try
+          LoadFromFile(icon_filename);
+          bmp.Assign(Graphic);
+        finally
+          Free;
+        end;
+
+        // Устанавливаем уконку узла дерева 
         ANode.ImageIndex := FImageList.Add(bmp, nil);
       finally
         bmp.Free;  
       end;
     end
     else
-      ANode.ImageIndex := NO_IMG_INDEX;
+      ANode.ImageIndex := ADefaultImgIndex;
   finally
     desktop_file.Free;
   end;  
+end;
+
+{ Проверка узла-ярлыка }
+function TFolderEplorerTreeView.IsDesktopNode(ANode: TTreeNode): Boolean;
+begin
+  Result := ExtractFileExt(ANode.Text) = DEFAULT_DESKTOP_FILE_EXT
+end;
+
+{ Запуск узла-ярлыка }
+procedure TFolderEplorerTreeView.ExecDesktopNode(ANode: TTreeNode);
+var 
+  desktop_filename: AnsiString;
+  desktop_file: TDesktopFile;
+begin
+  desktop_filename := filefunc.JoinPath([FRootFolderPath, ANode.GetTextPath()]);
+  if FileExists(desktop_filename) then
+  begin
+    desktop_file := TDesktopFile.Create(desktop_filename);
+    try
+      desktop_file.Execute();
+    finally
+      desktop_file.Free;
+    end;    
+  end
+  else
+    logfunc.WarningMsgFmt('Файл ярлыка <%s> не найден', [desktop_filename]);  
+end;
+
+{ Запуск узла по ассоциации }
+procedure TFolderEplorerTreeView.ExecAssociateNode(ANode: TTreeNode);
+begin
+end;
+
+{ Запуск узла в зависимости от его типа }
+procedure TFolderEplorerTreeView.ExecNode(ANode: TTreeNode);
+begin
+  if ANode = nil then
+    Exit;
+  if IsDesktopNode(ANode) then
+    ExecDesktopNode(ANode)
+  else
+    ExecAssociateNode(ANode);
 end;
 
 

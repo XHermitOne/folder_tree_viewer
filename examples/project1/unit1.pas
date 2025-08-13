@@ -18,6 +18,7 @@ type
     SelectDirectoryDialog1: TSelectDirectoryDialog;
     SpeedButton1: TSpeedButton;
     procedure Button1Click(Sender: TObject);
+    procedure FolderEplorerTreeView1DblClick(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
   private
 
@@ -40,6 +41,12 @@ uses
 procedure TForm1.Button1Click(Sender: TObject);
 begin
   // FolderEplorerTreeView1.RootFolderPath := filefunc.JoinPath([filefunc.GetHomeDir(), 'tmp']);
+end;
+
+procedure TForm1.FolderEplorerTreeView1DblClick(Sender: TObject);
+begin
+  // Запустить выбранный узел
+  FolderEplorerTreeView1.ExecNode(FolderEplorerTreeView1.Selected);
 end;
 
 procedure TForm1.SpeedButton1Click(Sender: TObject);

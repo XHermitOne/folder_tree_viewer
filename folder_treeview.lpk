@@ -45,6 +45,10 @@
         <Filename Value="src/default_item_images.lrs"/>
         <Type Value="LRS"/>
       </Item>
+      <Item>
+        <Filename Value="utils/execfunc.pas"/>
+        <UnitName Value="execfunc"/>
+      </Item>
     </Files>
     <RequiredPkgs>
       <Item>
