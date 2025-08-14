@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <Version Value="12"/>
+    <BuildModes Active="Default"/>
+    <Units>
+      <Unit>
+        <Filename Value="menu_folder_explorer.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="245"/>
+        <CursorPos X="25" Y="292"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="menu_folder_epxlorer_form.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="MainForm"/>
+        <ResourceBaseClass Value="Form"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="39"/>
+        <CursorPos X="15" Y="57"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../../../../../ide/fpcupdeluxe/fpcupdeluxe/lazarus/lcl/forms.pp"/>
+        <UnitName Value="Forms"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="2376"/>
+        <CursorPos X="25" Y="1608"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../../../../../ide/fpcupdeluxe/fpcupdeluxe/lazarus/lcl/include/application.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="2238"/>
+        <CursorPos X="20" Y="2256"/>
+        <UsageCount Value="10"/>
+      </Unit>
+    </Units>
+    <JumpHistory HistoryIndex="25">
+      <Position>
+        <Filename Value="menu_folder_epxlorer_form.pas"/>
+      </Position>
+      <Position>
+        <Filename Value="menu_folder_explorer.lpr"/>
+        <Caret Line="169" Column="53" TopLine="163"/>
+      </Position>
+      <Position>
+        <Filename Value="menu_folder_explorer.lpr"/>
+        <Caret Line="112" Column="20" TopLine="97"/>
+      </Position>
+      <Position>
+        <Filename Value="menu_folder_explorer.lpr"/>
+        <Caret Line="250" TopLine="236"/>
+      </Position>
+      <Position>
+        <Filename Value="menu_folder_explorer.lpr"/>
+        <Caret Line="271" Column="5" TopLine="259"/>
+      </Position>
+      <Position>
+        <Filename Value="menu_folder_explorer.lpr"/>
+        <Caret Line="166" Column="37" TopLine="161"/>
+      </Position>
+      <Position>
+        <Filename Value="menu_folder_explorer.lpr"/>
+        <Caret Line="244" Column="56" TopLine="223"/>
+      </Position>
+      <Position>
+        <Filename Value="menu_folder_explorer.lpr"/>
+        <Caret Line="218" Column="15" TopLine="208"/>
+      </Position>
+      <Position>
+        <Filename Value="menu_folder_explorer.lpr"/>
+        <Caret Line="273" Column="3" TopLine="255"/>
+      </Position>
+      <Position>
+        <Filename Value="menu_folder_explorer.lpr"/>
+        <Caret Line="129" Column="31" TopLine="118"/>
+      </Position>
+      <Position>
+        <Filename Value="menu_folder_explorer.lpr"/>
+        <Caret Line="219" Column="15" TopLine="208"/>
+      </Position>
+      <Position>
+        <Filename Value="menu_folder_explorer.lpr"/>
+        <Caret Line="245" Column="34" TopLine="234"/>
+      </Position>
+      <Position>
+        <Filename Value="menu_folder_epxlorer_form.pas"/>
+        <Caret Line="15" Column="3" TopLine="4"/>
+      </Position>
+      <Position>
+        <Filename Value="menu_folder_explorer.lpr"/>
+        <Caret Line="245" Column="37" TopLine="234"/>
+      </Position>
+      <Position>
+        <Filename Value="menu_folder_explorer.lpr"/>
+        <Caret Line="167" TopLine="155"/>
+      </Position>
+      <Position>
+        <Filename Value="menu_folder_explorer.lpr"/>
+        <Caret Line="224" Column="29" TopLine="208"/>
+      </Position>
+      <Position>
+        <Filename Value="menu_folder_explorer.lpr"/>
+        <Caret Line="253" Column="12" TopLine="240"/>
+      </Position>
+      <Position>
+        <Filename Value="menu_folder_explorer.lpr"/>
+        <Caret Line="257" Column="37" TopLine="241"/>
+      </Position>
+      <Position>
+        <Filename Value="menu_folder_explorer.lpr"/>
+        <Caret Line="290" TopLine="276"/>
+      </Position>
+      <Position>
+        <Filename Value="menu_folder_explorer.lpr"/>
+        <Caret Line="279" TopLine="257"/>
+      </Position>
+      <Position>
+        <Filename Value="menu_folder_explorer.lpr"/>
+        <Caret Line="246" Column="35" TopLine="236"/>
+      </Position>
+      <Position>
+        <Filename Value="menu_folder_explorer.lpr"/>
+        <Caret Line="301" Column="3" TopLine="282"/>
+      </Position>
+      <Position>
+        <Filename Value="menu_folder_epxlorer_form.pas"/>
+        <Caret Line="53" Column="6" TopLine="31"/>
+      </Position>
+      <Position>
+        <Filename Value="menu_folder_explorer.lpr"/>
+        <Caret Line="265" Column="17" TopLine="237"/>
+      </Position>
+      <Position>
+        <Filename Value="menu_folder_explorer.lpr"/>
+        <Caret Line="292" Column="25" TopLine="245"/>
+      </Position>
+      <Position>
+        <Filename Value="menu_folder_epxlorer_form.pas"/>
+        <Caret Line="57" Column="28" TopLine="38"/>
+      </Position>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes ActiveMode=""/>
+    </RunParams>
+  </ProjectSession>
+</CONFIG>

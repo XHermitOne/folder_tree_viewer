@@ -263,7 +263,7 @@ var
     IS_OPEN_LOG_FILE: Boolean = False;
 
     { Режим отладки }
-    DEBUG_MODE: Boolean = True;
+    DEBUG_MODE: Boolean = False;
     { Режим журналирования }
     LOG_MODE: Boolean = False;
 

@@ -1,0 +1,25 @@
+object MainForm: TMainForm
+  Left = 248
+  Height = 565
+  Top = 172
+  Width = 401
+  ClientHeight = 565
+  ClientWidth = 401
+  OnClose = FormClose
+  LCLVersion = '3.6.0.0'
+  object FolderEplorerTreeView1: TFolderEplorerTreeView
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Owner
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Control = Owner
+    AnchorSideBottom.Side = asrBottom
+    Left = 0
+    Height = 565
+    Top = 0
+    Width = 401
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    TabOrder = 0
+    OnDblClick = FolderEplorerTreeView1DblClick
+  end
+end

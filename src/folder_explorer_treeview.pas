@@ -47,12 +47,17 @@ type
 
     { Проверка узла-ярлыка }
     function IsDesktopNode(ANode: TTreeNode): Boolean;
+    { Проверка узла-папки }
+    function IsFolderNode(ANode: TTreeNode): Boolean;
+
     { Запуск узла-ярлыка }
     procedure ExecDesktopNode(ANode: TTreeNode);
     { Запуск узла по ассоциации }
     procedure ExecAssociateNode(ANode: TTreeNode);
     { Запуск узла в зависимости от его типа }
     procedure ExecNode(ANode: TTreeNode);
+    { Открыть в проводнике папку }
+    procedure OpenExplorerFolderNode(ANode: TTreeNode);
 
   published
     property RootFolderPath: String read FRootFolderPath write SetRootFolderPath;   
@@ -64,7 +69,8 @@ procedure Register;
 implementation
 
 uses
-  strfunc, filefunc, exttypes, logfunc, desktopfile;
+  strfunc, filefunc, exttypes, logfunc, execfunc,
+  desktopfile;
 
 procedure Register;
 begin
@@ -266,7 +272,19 @@ end;
 
 { Запуск узла по ассоциации }
 procedure TFolderEplorerTreeView.ExecAssociateNode(ANode: TTreeNode);
+var
+  node_path, cmd: AnsiString;
 begin
+  node_path := filefunc.JoinPath([FRootFolderPath, ANode.GetTextPath()]);
+
+  {$IFDEF linux}
+  cmd := Format('xdg-open %s', [node_path]);
+  execfunc.ExecuteSystem(cmd); 
+  {$ENDIF}
+  {$IFDEF windows}
+  cmd := Format('start "%s"', [node_path]);
+  execfunc.ExecuteSystem(cmd); 
+  {$ENDIF}  
 end;
 
 { Запуск узла в зависимости от его типа }
@@ -275,9 +293,41 @@ begin
   if ANode = nil then
     Exit;
   if IsDesktopNode(ANode) then
+    // Если это файл ярлыка .desktop, тогда берем из него строку запуска и выполняем
     ExecDesktopNode(ANode)
+  else if IsFolderNode(ANode) then
+    // Если это папка, тогда открываем ее в проводнике
+    OpenExplorerFolderNode(ANode)
   else
+    // Во всех других случаях запускаем программу-ассоциацию файла
     ExecAssociateNode(ANode);
+end;
+
+
+{ Проверка узла-папки }
+function TFolderEplorerTreeView.IsFolderNode(ANode: TTreeNode): Boolean;
+var
+  node_path: AnsiString;
+begin
+  node_path := filefunc.JoinPath([FRootFolderPath, ANode.GetTextPath()]);
+  Result := DirectoryExists(node_path);
+end;
+
+
+{ Открыть в проводнике папку }
+procedure TFolderEplorerTreeView.OpenExplorerFolderNode(ANode: TTreeNode);
+var
+  node_path, cmd: AnsiString;
+begin
+  node_path := filefunc.JoinPath([FRootFolderPath, ANode.GetTextPath()]);
+  {$IFDEF linux}
+  cmd := Format('xdg-open %s', [node_path]);
+  execfunc.ExecuteSystem(cmd); 
+  {$ENDIF}
+  {$IFDEF windows}
+  cmd := Format('explorer.exe "%s"', [node_path]);
+  execfunc.ExecuteSystem(cmd); 
+  {$ENDIF}  
 end;
 
 

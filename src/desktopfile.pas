@@ -17,6 +17,7 @@ const
 
   DEFAULT_SYS_ICON_GNOME_PATH = '/usr/share/icons/gnome/16x16';
   DEFAULT_SYS_PIXMAPS_PATH = '/usr/share/pixmaps';
+  // В кеш системных иконок помещаем только PNG файлы
   DEFAULT_SYS_ICON_MATCH  = '*.png';
 
 type
@@ -132,15 +133,18 @@ begin
   end;
 end; 
 
-{ Имя файла иконки }
+{ Имя файла иконки. Получаем полное наименование файла иконки из .desktop файла }
 function TDesktopFile.GetIconFileName(): AnsiString;
 begin
+  // Читаем ключ Icon из .desktop файла, который по сути является INI файлом
   Result := ReadString(DEFAULT_DESKTOP_ENTRY_SECTION, 'Icon', '');
-  // Иконка задается не полным именем файла, а коротким наименованием системной иконки
+  // Если иконка задается не полным именем файла, а коротким наименованием, то считается что это системная иконка
   if (not FileExists(Result)) and (not strfunc.IsWordInStr(PathDelim, Result)) then
   begin
+    // Если кеш имен системных иконок не заполнен, то заполняем его
     if SYS_ICON_FILENAMES_CACHE = nil then
       CreateSysIconFileNameCache([DEFAULT_SYS_ICON_GNOME_PATH, DEFAULT_SYS_PIXMAPS_PATH]);
+    // Полное имя файла системной иконки ищем уже в кеше по имени файла
     Result := GetSysIconFileNameByName(Result);
   end;
 end; 
@@ -194,10 +198,12 @@ begin
   cmd := self.GetExecCmd();
   if not strfunc.IsEmptyStr(cmd) then
   begin
+    // перед запуском удаляем все управляющие символы
     cmd := StringReplace(cmd, '%f', '', [rfReplaceAll]); 
     cmd := StringReplace(cmd, '%F', '', [rfReplaceAll]); 
     cmd := StringReplace(cmd, '%u', '', [rfReplaceAll]); 
     cmd := StringReplace(cmd, '%U', '', [rfReplaceAll]); 
+    // Запуск комманды системы
     execfunc.ExecuteSystem(cmd);
   end
   else
