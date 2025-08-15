@@ -15,6 +15,8 @@ type
   TMainForm = class(TForm)
     FolderEplorerTreeView1: TFolderEplorerTreeView;
     procedure FolderEplorerTreeView1DblClick(Sender: TObject);
+    procedure FolderEplorerTreeView1ShowHint(Sender: TObject;
+      HintInfo: PHintInfo);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
   private
 
@@ -40,6 +42,12 @@ procedure TMainForm.FolderEplorerTreeView1DblClick(Sender: TObject);
 begin
   // Запустить выбранный узел
   FolderEplorerTreeView1.ExecNode(FolderEplorerTreeView1.Selected);
+end;
+
+procedure TMainForm.FolderEplorerTreeView1ShowHint(Sender: TObject;
+  HintInfo: PHintInfo);
+begin
+  FolderEplorerTreeView1.ShowNodeHint(HintInfo, Mouse.CursorPos);
 end;
 
 procedure TMainForm.FormClose(Sender: TObject; var CloseAction: TCloseAction);

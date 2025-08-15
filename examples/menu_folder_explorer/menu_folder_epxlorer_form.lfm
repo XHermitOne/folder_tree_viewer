@@ -6,6 +6,7 @@ object MainForm: TMainForm
   ClientHeight = 565
   ClientWidth = 401
   OnClose = FormClose
+  ShowHint = True
   LCLVersion = '3.6.0.0'
   object FolderEplorerTreeView1: TFolderEplorerTreeView
     AnchorSideLeft.Control = Owner
@@ -19,7 +20,12 @@ object MainForm: TMainForm
     Top = 0
     Width = 401
     Anchors = [akTop, akLeft, akRight, akBottom]
+    ParentShowHint = False
+    ReadOnly = True
+    ShowHint = True
     TabOrder = 0
     OnDblClick = FolderEplorerTreeView1DblClick
+    OnShowHint = FolderEplorerTreeView1ShowHint
+    Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
   end
 end

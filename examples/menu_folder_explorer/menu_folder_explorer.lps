@@ -7,21 +7,22 @@
       <Unit>
         <Filename Value="menu_folder_explorer.lpr"/>
         <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="245"/>
-        <CursorPos X="25" Y="292"/>
-        <UsageCount Value="20"/>
+        <TopLine Value="257"/>
+        <CursorPos X="48" Y="272"/>
+        <UsageCount Value="24"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="menu_folder_epxlorer_form.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="MainForm"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <IsVisibleTab Value="True"/>
-        <TopLine Value="39"/>
-        <CursorPos X="15" Y="57"/>
-        <UsageCount Value="20"/>
+        <TopLine Value="47"/>
+        <CursorPos X="14" Y="10"/>
+        <UsageCount Value="24"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
@@ -40,23 +41,21 @@
         <CursorPos X="20" Y="2256"/>
         <UsageCount Value="10"/>
       </Unit>
+      <Unit>
+        <Filename Value="../../src/folder_explorer_treeview.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="400"/>
+        <CursorPos X="22" Y="405"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="menu_folder_epxlorer_form.lfm"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="LFM"/>
+      </Unit>
     </Units>
-    <JumpHistory HistoryIndex="25">
-      <Position>
-        <Filename Value="menu_folder_epxlorer_form.pas"/>
-      </Position>
-      <Position>
-        <Filename Value="menu_folder_explorer.lpr"/>
-        <Caret Line="169" Column="53" TopLine="163"/>
-      </Position>
-      <Position>
-        <Filename Value="menu_folder_explorer.lpr"/>
-        <Caret Line="112" Column="20" TopLine="97"/>
-      </Position>
-      <Position>
-        <Filename Value="menu_folder_explorer.lpr"/>
-        <Caret Line="250" TopLine="236"/>
-      </Position>
+    <JumpHistory HistoryIndex="27">
       <Position>
         <Filename Value="menu_folder_explorer.lpr"/>
         <Caret Line="271" Column="5" TopLine="259"/>
@@ -144,6 +143,30 @@
       <Position>
         <Filename Value="menu_folder_epxlorer_form.pas"/>
         <Caret Line="57" Column="28" TopLine="38"/>
+      </Position>
+      <Position>
+        <Filename Value="menu_folder_epxlorer_form.pas"/>
+        <Caret Line="52" Column="66" TopLine="39"/>
+      </Position>
+      <Position>
+        <Filename Value="menu_folder_explorer.lpr"/>
+        <Caret Line="292" Column="25" TopLine="270"/>
+      </Position>
+      <Position>
+        <Filename Value="menu_folder_epxlorer_form.pas"/>
+        <Caret Line="60" Column="66" TopLine="41"/>
+      </Position>
+      <Position>
+        <Filename Value="menu_folder_explorer.lpr"/>
+        <Caret Line="274" Column="10" TopLine="270"/>
+      </Position>
+      <Position>
+        <Filename Value="menu_folder_epxlorer_form.pas"/>
+        <Caret Line="54" Column="29"/>
+      </Position>
+      <Position>
+        <Filename Value="menu_folder_explorer.lpr"/>
+        <Caret Line="279" Column="39" TopLine="272"/>
       </Position>
     </JumpHistory>
     <RunParams>

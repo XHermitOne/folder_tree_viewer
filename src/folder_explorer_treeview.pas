@@ -22,6 +22,24 @@ const
   DEFAULT_DESKTOP_FILE_EXT = '.desktop';
 
 type
+
+  { Класс элемента списка хранения всплывающих подсказок узлов }   
+  TTreeNodeHintItem = class
+    Name: AnsiString;
+    Hint: AnsiString;
+    NodeIndex: Integer;
+  end;
+ 
+  { Класс списка хранения всплывающих подсказок узлов } 
+  TTreeNodeHintList = class(TList)
+
+    destructor Destroy; override;
+
+    function GetHint(ANodeIndex: Integer): AnsiString;
+    function Add(AName, AHint: AnsiString; ANodeIndex: Integer): Integer;
+  end;
+ 
+  { Класс контрола дерева проводника }
   TFolderEplorerTreeView = class(TTreeView)
   private
 
@@ -30,6 +48,8 @@ type
     FRootFolderPath: String;
     { Список используемых иконок }
     FImageList: TImageList;
+    { Список всплывающих подсказок узлов }
+    FNodeHintList: TTreeNodeHintList;
 
     { Установить полный путь к папке просмотра и сразу обновить контрол }
     procedure SetRootFolderPath(ARootFolderPath: String);
@@ -38,7 +58,7 @@ type
     procedure SetNodeFolderPath(AFolderPath: String; ANode: TTreeNode);
 
     { Установить иконку узла по имени файла desktop }
-    procedure SetNodeIconByDesktop(ANode: TTreeNode; const ADesktopFileName: AnsiString; const ADefaultImgIndex: Integer);
+    procedure SetNodeByDesktop(ANode: TTreeNode; const ADesktopFileName: AnsiString; const ADefaultImgIndex: Integer);
 
   public
     // Конструктор
@@ -59,6 +79,9 @@ type
     { Открыть в проводнике папку }
     procedure OpenExplorerFolderNode(ANode: TTreeNode);
 
+    { Показать всплывающую подсказку узла }
+    procedure ShowNodeHint(AHintInfo: PHintInfo; APosition: TPoint);
+
   published
     property RootFolderPath: String read FRootFolderPath write SetRootFolderPath;   
 
@@ -78,7 +101,51 @@ begin
   RegisterComponents('Misc',[TFolderEplorerTreeView]);
 end;
 
+{ === TTreeNodeHintList === }
+function TTreeNodeHintList.GetHint(ANodeIndex: Integer): AnsiString;
+var
+  i: Integer;
+begin
+  Result := '';
 
+  for i := 0 to Count - 1 do
+  begin
+    // logfunc.DebugMsgFmt('Поиск подсказки в списке [%d : %d]', [ANodeIndex, TTreeNodeHintItem(Items[i]).NodeIndex]);
+    if TTreeNodeHintItem(Items[i]).NodeIndex = ANodeIndex then
+    begin
+      Result := TTreeNodeHintItem(Items[i]).Hint;
+      // logfunc.DebugMsgFmt('Получение подсказки <%d : %s>', [ANodeIndex, Result]);
+      break;
+    end;
+  end;
+end;
+ 
+function TTreeNodeHintList.Add(AName, AHint: AnsiString; ANodeIndex: Integer): Integer;
+var
+  item: TTreeNodeHintItem;
+begin
+  // logfunc.DebugMsgFmt('Добавление подсказки <%s : %s : %d>', [AName, AHint, ANodeIndex]);
+  item := TTreeNodeHintItem.Create;
+  item.Name := AName;
+  item.Hint := AHint;
+  item.NodeIndex := ANodeIndex;
+  Result := inherited Add(item);
+end;
+
+destructor TTreeNodeHintList.Destroy;
+var
+  i: Integer;
+begin
+  for i := 0 to Count - 1 do
+  begin
+    TTreeNodeHintItem(Items[i]).Destroy;
+  end;
+
+  inherited;
+end;
+
+ 
+{ === TFolderEplorerTreeView === }
 constructor TFolderEplorerTreeView.Create(AOwner: TComponent);
 var
   bmp: TBitmap;
@@ -113,14 +180,19 @@ begin
   //FImageList.Images[NO_IMG_INDEX].LoadFromLazarusResource('image');
   // Назначение ImageList для TTreeView
   self.Images := FImageList;
+
+  // Инициализация списка всплывающих подсказок узлов
+  FNodeHintList := TTreeNodeHintList.Create;
 end;
 
 
 destructor TFolderEplorerTreeView.Destroy;
 begin
-  desktopfile.DestroySysIconFileNameCache();
+  FNodeHintList.Destroy;
 
   FreeAndNil(FImageList);
+
+  desktopfile.DestroySysIconFileNameCache();
   inherited;
 end;
 
@@ -172,7 +244,7 @@ begin
       node := Items.AddChild(ANode, base_filename);
       desktop_filename := filefunc.JoinPath([dirs[i], DEFAULT_DIRECTORY_DESKTOP_FILENAME]);
       if FileExists(desktop_filename) then
-        self.SetNodeIconByDesktop(node, desktop_filename, FOLDER_IMG_INDEX)
+        self.SetNodeByDesktop(node, desktop_filename, FOLDER_IMG_INDEX)
       else
         node.ImageIndex := FOLDER_IMG_INDEX;
       // Рекурсивно вызываем обработку подпапок
@@ -191,7 +263,7 @@ begin
       // logfunc.InfoMsgFmt('Добавление файла <%s>', [filenames[i]]);
       node := Items.AddChild(ANode, base_filename);
       if ExtractFileExt(base_filename) = DEFAULT_DESKTOP_FILE_EXT then
-        self.SetNodeIconByDesktop(node, filenames[i], FILE_IMG_INDEX)
+        self.SetNodeByDesktop(node, filenames[i], FILE_IMG_INDEX)
       else 
         node.ImageIndex := FILE_IMG_INDEX;
     end;
@@ -201,11 +273,12 @@ end;
 
 
 { Установить иконку узла по имени файла desktop }
-procedure TFolderEplorerTreeView.SetNodeIconByDesktop(ANode: TTreeNode; const ADesktopFileName: AnsiString; const ADefaultImgIndex: Integer);
+procedure TFolderEplorerTreeView.SetNodeByDesktop(ANode: TTreeNode; const ADesktopFileName: AnsiString; const ADefaultImgIndex: Integer);
 var
   desktop_file: TDesktopFile;
   bmp: TBitmap;
   icon_filename: AnsiString;
+  comment: AnsiString;
 begin
   if not FileExists(ADesktopFileName) then
   begin
@@ -216,6 +289,7 @@ begin
   desktop_file := TDesktopFile.Create(ADesktopFileName);
   try
     icon_filename := desktop_file.GetIconFileName();
+    comment := desktop_file.GetComment();
     if (not strfunc.IsEmptyStr(icon_filename)) and FileExists(icon_filename) then
     begin
       bmp := TBitmap.Create();
@@ -233,6 +307,10 @@ begin
 
         // Устанавливаем уконку узла дерева 
         ANode.ImageIndex := FImageList.Add(bmp, nil);
+
+        // Установить всплывающую подсказку как комментарий
+        if ShowHint and (not strfunc.IsEmptyStr(comment)) then
+          FNodeHintList.Add(ANode.Text, comment, ANode.AbsoluteIndex);
       finally
         bmp.Free;  
       end;
@@ -328,6 +406,37 @@ begin
   cmd := Format('explorer.exe "%s"', [node_path]);
   execfunc.ExecuteSystem(cmd); 
   {$ENDIF}  
+end;
+
+
+{ Показать всплывающую подсказку узла }
+procedure TFolderEplorerTreeView.ShowNodeHint(AHintInfo: PHintInfo; APosition: TPoint);
+var
+  node: TTreeNode;
+  hint_str: AnsiString;
+begin
+  // Если отключено отбражение всплывающей подсказки узлов, то просто выходим
+  if not ShowHint then
+  begin
+    // logfunc.WarningMsg('Отключено отображение всплывающей подсказки узлов');
+    Exit;
+  end;
+
+  // Если позиция вывода всплывающей подсказки не определена, то определяем по позиции курсора мыши
+  if (APosition.X = 0) and (APosition.Y = 0) then
+    APosition := Mouse.CursorPos;
+  APosition := self.ScreenToClient(APosition);
+  // Определяем объект узла по координатам
+  node := self.GetNodeAt(APosition.X, APosition.Y);
+  // Если какойто узел соответствует координатам
+  if node <> nil then
+  begin
+    // то заполняем параметры отображения всплывающей подсказки
+    hint_str := FNodeHintList.GetHint(node.AbsoluteIndex);
+    // logfunc.DebugMsgFmt('Подсказка <%s>', [hint_str]);
+    AHintInfo^.HintStr := hint_str;
+    AHintInfo^.ReshowTimeout := 100;
+  end;
 end;
 
 
