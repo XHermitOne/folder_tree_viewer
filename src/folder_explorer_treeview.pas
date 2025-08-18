@@ -289,7 +289,6 @@ begin
   desktop_file := TDesktopFile.Create(ADesktopFileName);
   try
     icon_filename := desktop_file.GetIconFileName();
-    comment := desktop_file.GetComment();
     if (not strfunc.IsEmptyStr(icon_filename)) and FileExists(icon_filename) then
     begin
       bmp := TBitmap.Create();
@@ -307,16 +306,17 @@ begin
 
         // Устанавливаем уконку узла дерева 
         ANode.ImageIndex := FImageList.Add(bmp, nil);
-
-        // Установить всплывающую подсказку как комментарий
-        if ShowHint and (not strfunc.IsEmptyStr(comment)) then
-          FNodeHintList.Add(ANode.Text, comment, ANode.AbsoluteIndex);
       finally
         bmp.Free;  
       end;
     end
     else
       ANode.ImageIndex := ADefaultImgIndex;
+
+    comment := desktop_file.GetComment();
+    // Установить всплывающую подсказку как комментарий
+    if ShowHint and (not strfunc.IsEmptyStr(comment)) then
+      FNodeHintList.Add(ANode.Text, comment, ANode.AbsoluteIndex);
   finally
     desktop_file.Free;
   end;  
