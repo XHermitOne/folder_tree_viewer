@@ -9,8 +9,8 @@
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="152"/>
-        <CursorPos X="18" Y="159"/>
+        <TopLine Value="94"/>
+        <CursorPos X="17" Y="114"/>
         <UsageCount Value="24"/>
         <Loaded Value="True"/>
       </Unit>
@@ -20,7 +20,7 @@
         <ComponentName Value="MainForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <TopLine Value="47"/>
+        <TopLine Value="16"/>
         <CursorPos X="14" Y="10"/>
         <UsageCount Value="24"/>
         <Loaded Value="True"/>
@@ -44,8 +44,8 @@
       <Unit>
         <Filename Value="../../src/folder_explorer_treeview.pas"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="300"/>
-        <CursorPos X="23" Y="310"/>
+        <TopLine Value="192"/>
+        <CursorPos X="42" Y="199"/>
         <UsageCount Value="10"/>
         <Loaded Value="True"/>
       </Unit>
@@ -56,7 +56,7 @@
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit>
     </Units>
-    <JumpHistory HistoryIndex="27">
+    <JumpHistory HistoryIndex="29">
       <Position>
         <Filename Value="menu_folder_explorer.lpr"/>
         <Caret Line="271" Column="5" TopLine="259"/>
@@ -168,6 +168,14 @@
       <Position>
         <Filename Value="menu_folder_explorer.lpr"/>
         <Caret Line="279" Column="39" TopLine="272"/>
+      </Position>
+      <Position>
+        <Filename Value="../../src/folder_explorer_treeview.pas"/>
+        <Caret Line="204" Column="36" TopLine="193"/>
+      </Position>
+      <Position>
+        <Filename Value="menu_folder_explorer.lpr"/>
+        <Caret Line="191" Column="21" TopLine="183"/>
       </Position>
     </JumpHistory>
     <RunParams>

@@ -111,7 +111,7 @@ uses
   { you can add units after this }
   Classes, CustApp, Mouse,
   SysUtils,
-  logfunc;
+  logfunc, filefunc;
 
 {$R *.res}
 const
@@ -193,6 +193,8 @@ begin
   if HasOption('f', 'folder') then
   begin
     folder := Trim(GetOptionValue('f', 'folder'));
+    folder := filefunc.NormalPathFileName(folder);
+
     if not DirectoryExists(folder) then
     begin
       logfunc.ErrorMsgFmt('Папка меню <%s> не найдена', [folder], True);

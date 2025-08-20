@@ -92,6 +92,7 @@ procedure Register;
 implementation
 
 uses
+  LazFileUtils,
   strfunc, filefunc, exttypes, logfunc, execfunc,
   desktopfile;
 
@@ -200,6 +201,9 @@ end;
 { Установить полный путь к папке просмотра и сразу обновить контрол }
 procedure TFolderEplorerTreeView.SetRootFolderPath(ARootFolderPath: String);
 begin
+  ARootFolderPath := filefunc.NormalPathFileName(ARootFolderPath);
+  // ARootFolderPath := LazFileUtils.ExpandFileNameUTF8(ARootFolderPath);
+
   if not DirectoryExists(ARootFolderPath) then
   begin
      logfunc.ErrorMsgFmt('Папка <%s> не найдена', [ARootFolderPath]);
