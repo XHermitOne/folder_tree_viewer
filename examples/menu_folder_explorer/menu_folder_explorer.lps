@@ -9,8 +9,8 @@
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="94"/>
-        <CursorPos X="17" Y="114"/>
+        <TopLine Value="112"/>
+        <CursorPos X="32" Y="110"/>
         <UsageCount Value="24"/>
         <Loaded Value="True"/>
       </Unit>
@@ -44,8 +44,8 @@
       <Unit>
         <Filename Value="../../src/folder_explorer_treeview.pas"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="192"/>
-        <CursorPos X="42" Y="199"/>
+        <TopLine Value="283"/>
+        <CursorPos X="20" Y="287"/>
         <UsageCount Value="10"/>
         <Loaded Value="True"/>
       </Unit>

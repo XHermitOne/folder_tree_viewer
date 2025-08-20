@@ -297,7 +297,7 @@ begin
     begin
       bmp := TBitmap.Create();
       try
-        // logfunc.DebugMsgFmt('Файл иконки <%s>', [icon_filename]);
+        logfunc.DebugMsgFmt('Файл иконки <%s>', [icon_filename]);
 
         // Пример загрузки файла PNG в TBitmap
         with TPicture.Create do
