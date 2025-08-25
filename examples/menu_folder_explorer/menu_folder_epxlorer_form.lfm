@@ -27,5 +27,6 @@ object MainForm: TMainForm
     OnDblClick = FolderEplorerTreeView1DblClick
     OnShowHint = FolderEplorerTreeView1ShowHint
     Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
+    SysIconMode = imGtk
   end
 end

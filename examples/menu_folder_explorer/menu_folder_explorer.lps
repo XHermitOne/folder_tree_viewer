@@ -9,9 +9,9 @@
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="112"/>
-        <CursorPos X="32" Y="110"/>
-        <UsageCount Value="24"/>
+        <TopLine Value="98"/>
+        <CursorPos X="17" Y="104"/>
+        <UsageCount Value="27"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -22,7 +22,7 @@
         <ResourceBaseClass Value="Form"/>
         <TopLine Value="16"/>
         <CursorPos X="14" Y="10"/>
-        <UsageCount Value="24"/>
+        <UsageCount Value="27"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
@@ -43,10 +43,10 @@
       </Unit>
       <Unit>
         <Filename Value="../../src/folder_explorer_treeview.pas"/>
-        <EditorIndex Value="2"/>
-        <TopLine Value="283"/>
-        <CursorPos X="20" Y="287"/>
-        <UsageCount Value="10"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="200"/>
+        <CursorPos X="41" Y="211"/>
+        <UsageCount Value="12"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -55,132 +55,178 @@
         <UsageCount Value="10"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit>
+      <Unit>
+        <Filename Value="../../src/desktopfile.pas"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="67"/>
+        <CursorPos Y="79"/>
+        <UsageCount Value="12"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../../../../../ide/fpcupdeluxe/fpcupdeluxe/lazarus/lcl/include/picture.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="770"/>
+        <CursorPos Y="781"/>
+        <UsageCount Value="10"/>
+      </Unit>
     </Units>
     <JumpHistory HistoryIndex="29">
       <Position>
-        <Filename Value="menu_folder_explorer.lpr"/>
-        <Caret Line="271" Column="5" TopLine="259"/>
-      </Position>
-      <Position>
-        <Filename Value="menu_folder_explorer.lpr"/>
-        <Caret Line="166" Column="37" TopLine="161"/>
-      </Position>
-      <Position>
-        <Filename Value="menu_folder_explorer.lpr"/>
-        <Caret Line="244" Column="56" TopLine="223"/>
-      </Position>
-      <Position>
-        <Filename Value="menu_folder_explorer.lpr"/>
-        <Caret Line="218" Column="15" TopLine="208"/>
-      </Position>
-      <Position>
-        <Filename Value="menu_folder_explorer.lpr"/>
-        <Caret Line="273" Column="3" TopLine="255"/>
-      </Position>
-      <Position>
-        <Filename Value="menu_folder_explorer.lpr"/>
-        <Caret Line="129" Column="31" TopLine="118"/>
-      </Position>
-      <Position>
-        <Filename Value="menu_folder_explorer.lpr"/>
-        <Caret Line="219" Column="15" TopLine="208"/>
-      </Position>
-      <Position>
-        <Filename Value="menu_folder_explorer.lpr"/>
-        <Caret Line="245" Column="34" TopLine="234"/>
-      </Position>
-      <Position>
-        <Filename Value="menu_folder_epxlorer_form.pas"/>
-        <Caret Line="15" Column="3" TopLine="4"/>
-      </Position>
-      <Position>
-        <Filename Value="menu_folder_explorer.lpr"/>
-        <Caret Line="245" Column="37" TopLine="234"/>
-      </Position>
-      <Position>
-        <Filename Value="menu_folder_explorer.lpr"/>
-        <Caret Line="167" TopLine="155"/>
-      </Position>
-      <Position>
-        <Filename Value="menu_folder_explorer.lpr"/>
-        <Caret Line="224" Column="29" TopLine="208"/>
-      </Position>
-      <Position>
-        <Filename Value="menu_folder_explorer.lpr"/>
-        <Caret Line="253" Column="12" TopLine="240"/>
-      </Position>
-      <Position>
-        <Filename Value="menu_folder_explorer.lpr"/>
-        <Caret Line="257" Column="37" TopLine="241"/>
-      </Position>
-      <Position>
-        <Filename Value="menu_folder_explorer.lpr"/>
-        <Caret Line="290" TopLine="276"/>
-      </Position>
-      <Position>
-        <Filename Value="menu_folder_explorer.lpr"/>
-        <Caret Line="279" TopLine="257"/>
-      </Position>
-      <Position>
-        <Filename Value="menu_folder_explorer.lpr"/>
-        <Caret Line="246" Column="35" TopLine="236"/>
-      </Position>
-      <Position>
-        <Filename Value="menu_folder_explorer.lpr"/>
-        <Caret Line="301" Column="3" TopLine="282"/>
-      </Position>
-      <Position>
-        <Filename Value="menu_folder_epxlorer_form.pas"/>
-        <Caret Line="53" Column="6" TopLine="31"/>
-      </Position>
-      <Position>
-        <Filename Value="menu_folder_explorer.lpr"/>
-        <Caret Line="265" Column="17" TopLine="237"/>
-      </Position>
-      <Position>
-        <Filename Value="menu_folder_explorer.lpr"/>
-        <Caret Line="292" Column="25" TopLine="245"/>
-      </Position>
-      <Position>
-        <Filename Value="menu_folder_epxlorer_form.pas"/>
-        <Caret Line="57" Column="28" TopLine="38"/>
-      </Position>
-      <Position>
-        <Filename Value="menu_folder_epxlorer_form.pas"/>
-        <Caret Line="52" Column="66" TopLine="39"/>
-      </Position>
-      <Position>
-        <Filename Value="menu_folder_explorer.lpr"/>
-        <Caret Line="292" Column="25" TopLine="270"/>
-      </Position>
-      <Position>
-        <Filename Value="menu_folder_epxlorer_form.pas"/>
-        <Caret Line="60" Column="66" TopLine="41"/>
-      </Position>
-      <Position>
-        <Filename Value="menu_folder_explorer.lpr"/>
-        <Caret Line="274" Column="10" TopLine="270"/>
-      </Position>
-      <Position>
-        <Filename Value="menu_folder_epxlorer_form.pas"/>
-        <Caret Line="54" Column="29"/>
-      </Position>
-      <Position>
-        <Filename Value="menu_folder_explorer.lpr"/>
-        <Caret Line="279" Column="39" TopLine="272"/>
+        <Filename Value="../../src/folder_explorer_treeview.pas"/>
+        <Caret Line="327" TopLine="316"/>
       </Position>
       <Position>
         <Filename Value="../../src/folder_explorer_treeview.pas"/>
-        <Caret Line="204" Column="36" TopLine="193"/>
+        <Caret Line="329" TopLine="316"/>
       </Position>
       <Position>
-        <Filename Value="menu_folder_explorer.lpr"/>
-        <Caret Line="191" Column="21" TopLine="183"/>
+        <Filename Value="../../src/folder_explorer_treeview.pas"/>
+        <Caret Line="332" TopLine="316"/>
+      </Position>
+      <Position>
+        <Filename Value="../../src/folder_explorer_treeview.pas"/>
+        <Caret Line="334" TopLine="316"/>
+      </Position>
+      <Position>
+        <Filename Value="../../src/folder_explorer_treeview.pas"/>
+        <Caret Line="268" TopLine="257"/>
+      </Position>
+      <Position>
+        <Filename Value="../../src/desktopfile.pas"/>
+        <Caret Line="156" TopLine="150"/>
+      </Position>
+      <Position>
+        <Filename Value="../../src/desktopfile.pas"/>
+        <Caret Line="230" TopLine="219"/>
+      </Position>
+      <Position>
+        <Filename Value="../../src/desktopfile.pas"/>
+        <Caret Line="231" TopLine="219"/>
+      </Position>
+      <Position>
+        <Filename Value="../../src/desktopfile.pas"/>
+        <Caret Line="232" TopLine="219"/>
+      </Position>
+      <Position>
+        <Filename Value="../../src/desktopfile.pas"/>
+        <Caret Line="236" TopLine="219"/>
+      </Position>
+      <Position>
+        <Filename Value="../../src/desktopfile.pas"/>
+        <Caret Line="156" TopLine="145"/>
+      </Position>
+      <Position>
+        <Filename Value="../../src/desktopfile.pas"/>
+        <Caret Line="230" TopLine="219"/>
+      </Position>
+      <Position>
+        <Filename Value="../../src/desktopfile.pas"/>
+        <Caret Line="231" TopLine="219"/>
+      </Position>
+      <Position>
+        <Filename Value="../../src/desktopfile.pas"/>
+        <Caret Line="156" TopLine="145"/>
+      </Position>
+      <Position>
+        <Filename Value="../../src/desktopfile.pas"/>
+        <Caret Line="230" TopLine="219"/>
+      </Position>
+      <Position>
+        <Filename Value="../../src/desktopfile.pas"/>
+        <Caret Line="231" TopLine="219"/>
+      </Position>
+      <Position>
+        <Filename Value="../../src/folder_explorer_treeview.pas"/>
+        <Caret Line="312" Column="13" TopLine="262"/>
+      </Position>
+      <Position>
+        <Filename Value="../../src/folder_explorer_treeview.pas"/>
+      </Position>
+      <Position>
+        <Filename Value="../../src/folder_explorer_treeview.pas"/>
+        <Caret Line="310" Column="31" TopLine="292"/>
+      </Position>
+      <Position>
+        <Filename Value="../../src/folder_explorer_treeview.pas"/>
+        <Caret Line="316" Column="51" TopLine="298"/>
+      </Position>
+      <Position>
+        <Filename Value="../../src/desktopfile.pas"/>
+        <Caret Line="12" Column="41" TopLine="4"/>
+      </Position>
+      <Position>
+        <Filename Value="../../src/desktopfile.pas"/>
+        <Caret Line="229" Column="55" TopLine="215"/>
+      </Position>
+      <Position>
+        <Filename Value="../../src/desktopfile.pas"/>
+        <Caret Line="224" Column="41" TopLine="215"/>
+      </Position>
+      <Position>
+        <Filename Value="../../src/desktopfile.pas"/>
+        <Caret Line="233" Column="50" TopLine="215"/>
+      </Position>
+      <Position>
+        <Filename Value="../../src/folder_explorer_treeview.pas"/>
+        <Caret Line="202" TopLine="146"/>
+      </Position>
+      <Position>
+        <Filename Value="../../src/folder_explorer_treeview.pas"/>
+        <Caret Line="161" TopLine="146"/>
+      </Position>
+      <Position>
+        <Filename Value="../../src/desktopfile.pas"/>
+        <Caret Line="160" TopLine="148"/>
+      </Position>
+      <Position>
+        <Filename Value="../../src/desktopfile.pas"/>
+        <Caret Line="232" TopLine="221"/>
+      </Position>
+      <Position>
+        <Filename Value="../../src/folder_explorer_treeview.pas"/>
+        <Caret Line="218" TopLine="200"/>
+      </Position>
+      <Position>
+        <Filename Value="../../src/folder_explorer_treeview.pas"/>
+        <Caret Line="212" TopLine="203"/>
       </Position>
     </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>
-      <Modes ActiveMode=""/>
+      <Modes ActiveMode="default">
+        <Mode Name="default">
+          <local>
+            <CommandLineParams Value="--debug --folder=~/tmp/menu"/>
+          </local>
+        </Mode>
+      </Modes>
     </RunParams>
+    <HistoryLists>
+      <List Name="LaunchingApplication" Type="File" Count="1">
+        <Item1 Value="/usr/bin/gnome-terminal -t &apos;Lazarus Run Output&apos; -e &apos;$(LazarusDir)/tools/runwait.sh $(TargetCmdLine)&apos;"/>
+      </List>
+      <List Name="CommandLineParameters" Count="1">
+        <Item1 Value="--debug --folder=~/tmp/menu"/>
+      </List>
+    </HistoryLists>
   </ProjectSession>
+  <Debugging>
+    <BreakPoints>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="../../src/folder_explorer_treeview.pas"/>
+        <Line Value="215"/>
+      </Item>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="../../src/folder_explorer_treeview.pas"/>
+        <Line Value="203"/>
+      </Item>
+    </BreakPoints>
+  </Debugging>
 </CONFIG>

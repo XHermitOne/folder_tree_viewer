@@ -22,6 +22,7 @@ const
   DEFAULT_DESKTOP_FILE_EXT = '.desktop';
 
 type
+  TIconMode = (imCached, imGtk);
 
   { Класс элемента списка хранения всплывающих подсказок узлов }   
   TTreeNodeHintItem = class
@@ -44,6 +45,9 @@ type
   private
 
   protected
+    { Режим получения доступа к системным иконкам }
+    FSysIconMode: TIconMode;
+
     { Полный путь к папке }
     FRootFolderPath: String;
     { Список используемых иконок }
@@ -59,6 +63,9 @@ type
 
     { Установить иконку узла по имени файла desktop }
     procedure SetNodeByDesktop(ANode: TTreeNode; const ADesktopFileName: AnsiString; const ADefaultImgIndex: Integer);
+
+    { Установить режим получения доступа к системным иконкам }
+    procedure SetSysIconMode(ASysIconMode: TIconMode);
 
   public
     // Конструктор
@@ -85,6 +92,7 @@ type
   published
     property RootFolderPath: String read FRootFolderPath write SetRootFolderPath;   
 
+    property SysIconMode: TIconMode read FSysIconMode write SetSysIconMode;
   end;
 
 procedure Register;
@@ -153,8 +161,6 @@ var
 begin
   inherited Create(AOwner);
 
-  desktopfile.CreateSysIconFileNameCache([desktopfile.DEFAULT_SYS_ICON_GNOME_PATH, desktopfile.DEFAULT_SYS_PIXMAPS_PATH]);
-
   FImageList := TImageList.Create(self);
   // FImageList.AddLazarusResource('default_item_images');
   //FImageList.Handles := [NO_IMG_INDEX, FOLDER_IMG_INDEX]; // Индексы иконок для папок и файлов
@@ -193,8 +199,24 @@ begin
 
   FreeAndNil(FImageList);
 
-  desktopfile.DestroySysIconFileNameCache();
+  if FSysIconMode = imCached then
+    desktopfile.DestroySysIconFileNameCache();
   inherited;
+end;
+
+
+{ Установить режим получения доступа к системным иконкам }
+procedure TFolderEplorerTreeView.SetSysIconMode(ASysIconMode: TIconMode);
+begin
+  if not (csDesigning in ComponentState) then
+    // Если компонент не редактируется в IDE, то производим манипуляции с кешем
+    if ASysIconMode = imCached then
+      // Если режим кеширования, то создаем кеш
+      desktopfile.CreateSysIconFileNameCache([desktopfile.DEFAULT_SYS_ICON_GNOME_PATH_16, desktopfile.DEFAULT_SYS_PIXMAPS_PATH])
+    else
+      // Не нужен кеш. Удаляем
+      desktopfile.DestroySysIconFileNameCache();
+  FSysIconMode := ASysIconMode;
 end;
 
 
@@ -292,8 +314,17 @@ begin
 
   desktop_file := TDesktopFile.Create(ADesktopFileName);
   try
-    icon_filename := desktop_file.GetIconFileName();
-    if (not strfunc.IsEmptyStr(icon_filename)) and FileExists(icon_filename) then
+    icon_filename := desktop_file.GetIconFileName(FSysIconMode = imCached);
+
+    if (not strfunc.IsEmptyStr(icon_filename)) and (ExtractFileExt(icon_filename) <> '.png') then
+    begin
+      logfunc.WarningMsgFmt('Не поддерживаемый формат иконки <%s>', [icon_filename]);
+      ANode.ImageIndex := ADefaultImgIndex;
+    end
+    else if strfunc.IsEmptyStr(icon_filename) then
+      // Файл иконки просто не определен
+      ANode.ImageIndex := ADefaultImgIndex
+    else if FileExists(icon_filename) then
     begin
       bmp := TBitmap.Create();
       try
@@ -315,7 +346,10 @@ begin
       end;
     end
     else
+    begin
+      logfunc.WarningMsgFmt('Файл иконки <%s> не найден', [icon_filename]);
       ANode.ImageIndex := ADefaultImgIndex;
+    end;
 
     comment := desktop_file.GetComment();
     // Установить всплывающую подсказку как комментарий

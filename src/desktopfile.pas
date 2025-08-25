@@ -15,7 +15,7 @@ uses
 const 
   DEFAULT_DESKTOP_ENTRY_SECTION = 'Desktop Entry';
 
-  DEFAULT_SYS_ICON_GNOME_PATH = '/usr/share/icons/gnome/16x16';
+  DEFAULT_SYS_ICON_GNOME_PATH_16 = '/usr/share/icons/gnome/16x16';
   DEFAULT_SYS_PIXMAPS_PATH = '/usr/share/pixmaps';
   // В кеш системных иконок помещаем только PNG файлы
   DEFAULT_SYS_ICON_MATCH  = '*.png';
@@ -25,9 +25,11 @@ type
 
   public
     { Имя файла иконки }
-    function GetIconFileName(): AnsiString;
+    function GetIconFileName(AFromCache: Boolean = False): AnsiString;
     { Поиск системного файла иконки по ее имени }
-    function FindSysIconFileName(const AIconName: AnsiString; AFindPaths: Array Of String): AnsiString;
+    function FindSysIconFileName(const AIconName: AnsiString; const AIconMatch: AnsiString = DEFAULT_SYS_ICON_MATCH; AFindPaths: Array Of String): AnsiString;    
+    { Альтернативный поиск системного файла иконки по ее имени }
+    function FindGtkIconFileName(const AIconName: AnsiString; const AIconSize: Integer = 16; AThemeName: AnsiString = ''): AnsiString;    
 
     { Команда выполнения }
     function GetExecCmd(): AnsiString;
@@ -52,7 +54,7 @@ type
 
 
 { Заполнение кеша списка файлов системных иконок }
-procedure CreateSysIconFileNameCache(AFindPaths: Array Of String);
+procedure CreateSysIconFileNameCache(AFindPaths: Array Of String; const AIconMatch: AnsiString = DEFAULT_SYS_ICON_MATCH);
 { Получить из кеша имя файла иконки по имени иконки }
 function GetSysIconFileNameByName(const AIconName: AnsiString): AnsiString;
 { Очистить и удалить кеш списка файлов системных иконок }
@@ -62,17 +64,19 @@ implementation
 
 uses
   FileUtil, LazFileUtils, Classes, 
+  GLib2, Gtk2,
   strfunc, exttypes, filefunc, logfunc, execfunc;
 
 var 
   SYS_ICON_FILENAMES_CACHE: TStringList = nil;
 
 { Заполнение кеша списка файлов системных иконок }
-procedure CreateSysIconFileNameCache(AFindPaths: Array Of String);
+procedure CreateSysIconFileNameCache(AFindPaths: Array Of String; const AIconMatch: AnsiString);
 var
   i_path, i_filename: Integer;
   filenames: TStringList;
 begin
+  logfunc.InfoMsg('Создание кеша имен файлов системных иконок');
   if SYS_ICON_FILENAMES_CACHE = nil then
     SYS_ICON_FILENAMES_CACHE := TStringList.Create();
 
@@ -83,7 +87,7 @@ begin
     begin
       try
         // Здесь создается список имен файлов. Память выделяется динамически
-        filenames := FileUtil.FindAllFiles(AFindPaths[i_path], DEFAULT_SYS_ICON_MATCH, True);
+        filenames := FileUtil.FindAllFiles(AFindPaths[i_path], AIconMatch, True);
 
         for i_filename := 0 to filenames.Count - 1 do
         begin
@@ -129,28 +133,38 @@ procedure DestroySysIconFileNameCache();
 begin
   if SYS_ICON_FILENAMES_CACHE <> nil then
   begin
+    logfunc.InfoMsg('Удаление кеша имен файлов системных иконок');
     SYS_ICON_FILENAMES_CACHE.Destroy;
   end;
 end; 
 
 { Имя файла иконки. Получаем полное наименование файла иконки из .desktop файла }
-function TDesktopFile.GetIconFileName(): AnsiString;
+function TDesktopFile.GetIconFileName(AFromCache: Boolean): AnsiString;
 begin
   // Читаем ключ Icon из .desktop файла, который по сути является INI файлом
   Result := ReadString(DEFAULT_DESKTOP_ENTRY_SECTION, 'Icon', '');
   // Если иконка задается не полным именем файла, а коротким наименованием, то считается что это системная иконка
   if (not FileExists(Result)) and (not strfunc.IsWordInStr(PathDelim, Result)) then
-  begin
-    // Если кеш имен системных иконок не заполнен, то заполняем его
-    if SYS_ICON_FILENAMES_CACHE = nil then
-      CreateSysIconFileNameCache([DEFAULT_SYS_ICON_GNOME_PATH, DEFAULT_SYS_PIXMAPS_PATH]);
-    // Полное имя файла системной иконки ищем уже в кеше по имени файла
-    Result := GetSysIconFileNameByName(Result);
+  try
+    if AFromCache then
+    begin   
+      // Если кеш имен системных иконок не заполнен, то заполняем его
+      if SYS_ICON_FILENAMES_CACHE = nil then
+        CreateSysIconFileNameCache([DEFAULT_SYS_ICON_GNOME_PATH_16, DEFAULT_SYS_PIXMAPS_PATH]);
+      // Полное имя файла системной иконки ищем уже в кеше по имени файла
+      Result := GetSysIconFileNameByName(Result);
+    end
+    else
+      Result := FindGtkIconFileName(Result);
+  except
+    logfunc.FatalMsgFmt('Ошибка получения имени файла системной иконки <%s>', [Result]);
+    Result := '';
   end;
-end; 
+end;
+
 
 { Поиск системного файла иконки по ее имени }
-function TDesktopFile.FindSysIconFileName(const AIconName: AnsiString; AFindPaths: Array Of String): AnsiString;
+function TDesktopFile.FindSysIconFileName(const AIconName: AnsiString; const AIconMatch: AnsiString; AFindPaths: Array Of String): AnsiString;    
 var
   i_path, i_filename: Integer;
   filenames: TStringList;
@@ -163,7 +177,7 @@ begin
     begin
       try
         // Здесь создается список имен файлов. Память выделяется динамически
-        filenames := FileUtil.FindAllFiles(AFindPaths[i_path], DEFAULT_SYS_ICON_MATCH, True);
+        filenames := FileUtil.FindAllFiles(AFindPaths[i_path], AIconMatch, True);
 
         for i_filename := 0 to filenames.Count - 1 do
         begin
@@ -184,6 +198,45 @@ begin
   end;
   // if strfunc.IsEmptyStr(Result) then logfunc.WarningMsgFmt('Не найден файл системной иконки <%s>', [AIconName]);
 end;
+
+
+{ Альтернативный поиск системного файла иконки по ее имени }
+function TDesktopFile.FindGtkIconFileName(const AIconName: AnsiString; const AIconSize: Integer = 16; AThemeName: AnsiString = ''): AnsiString;    
+var
+  icon_theme: PGtkIconTheme; // Тема иконок Gtk
+  icon_info: PGtkIconInfo;
+  icon_filename: Pgchar;
+begin
+  Result := '';
+
+  if strfunc.IsEmptyStr(AThemeName) then
+    // Имя темы не определено. Считаем что это тема указанная в настройках
+    icon_theme := gtk_icon_theme_get_default
+  else
+  begin
+    // Создаем тему с указанным именем
+    icon_theme := gtk_icon_theme_new;
+    gtk_icon_theme_set_custom_theme(icon_theme, Pgchar(AThemeName));
+  end;
+  
+  // Ищем иконку
+  icon_info := gtk_icon_theme_lookup_icon(icon_theme, Pgchar(AIconName), AIconSize, GTK_ICON_LOOKUP_USE_BUILTIN);
+  
+  if icon_info = nil then
+  begin
+    logfunc.WarningMsgFmt('Иконка <%s> не найдена', [AIconName]);
+    Exit;
+  end;
+  
+  try
+    icon_filename := gtk_icon_info_get_filename(icon_info);
+    // logfunc.DebugMsgFmt('Файл иконки "%s"', [icon_filename]);
+    Result := icon_filename;
+  finally
+    //g_object_unref(icon_info);
+  end;
+end;
+
 
 { Команда выполнения }
 function TDesktopFile.GetExecCmd(): AnsiString;
